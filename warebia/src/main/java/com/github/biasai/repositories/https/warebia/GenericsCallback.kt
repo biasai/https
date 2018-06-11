@@ -136,8 +136,12 @@ abstract class GenericsCallback<T : Any>(var https: Https? = null, var clazz: Cl
 
     //结束，无论是成功还是失败都会调用。且最后执行
     open fun onFinish() {
+        //fixme 关闭进度条
+        if (https?.load ?: false) {
+            https?.dismissProgress()
+        }
 
-        //结束回调
+        //结束回调（在进度条关闭之后，再回调。防止进度条和activity同时关闭。）
         https?.finish?.let {
             it()
         }
@@ -145,11 +149,6 @@ abstract class GenericsCallback<T : Any>(var https: Https? = null, var clazz: Cl
         //fixme 去除网络请求标志(网络请求结束)
         https?.let {
             Http.map.remove(it?.getUrlUnique())
-        }
-
-        //fixme 关闭进度条
-        if (https?.load ?: false) {
-            https?.dismissProgress()
         }
         https?.activity = null
         https?.headers?.clear()
