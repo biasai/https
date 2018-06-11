@@ -137,6 +137,11 @@ abstract class GenericsCallback<T : Any>(var https: Https? = null, var clazz: Cl
     //结束，无论是成功还是失败都会调用。且最后执行
     open fun onFinish() {
 
+        //结束回调
+        https?.finish?.let {
+            it()
+        }
+
         //fixme 去除网络请求标志(网络请求结束)
         https?.let {
             Http.map.remove(it?.getUrlUnique())

@@ -90,9 +90,9 @@ open class Https(open var url: String?, open var activity: Activity? = null) {//
     }
 
     //结束回调，无论是成功还是失败都会调用(最后执行)
-    protected var finish: ((response: String?) -> Unit)? = null
+    var finish: (() -> Unit)? = null
 
-    fun onFinish(finish: ((response: String?) -> Unit)? = null): Https {
+    fun onFinish(finish: (() -> Unit)? = null): Https {
         this.finish = finish
         return this
     }
